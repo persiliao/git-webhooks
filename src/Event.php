@@ -44,7 +44,7 @@ use PersiLiao\GitWebhooks\Provider\ProviderInterface;
  * @method $this onTeamAdd(Closure $handler) - Team added or modified on a repository.
  * @method $this onWatch(Closure $handler) - User stars a repository.
  */
-class EventFactory
+class Event
 {
     /**
      * @var ProviderInterface[]
