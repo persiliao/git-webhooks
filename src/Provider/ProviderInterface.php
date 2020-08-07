@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace PersiLiao\GitWebhooks;
+namespace PersiLiao\GitWebhooks\Provider;
 
-use PersiLiao\Event\PingEvent;
-use PersiLiao\Event\PushEvent;
 use PersiLiao\GitWebhooks\Event\AbstractEvent;
+use PersiLiao\GitWebhooks\Event\PingEvent;
+use PersiLiao\GitWebhooks\Event\PushEvent;
 
 interface ProviderInterface
 {

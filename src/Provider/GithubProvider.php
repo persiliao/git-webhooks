@@ -7,11 +7,10 @@
 
 declare(strict_types=1);
 
-namespace PersiLiao\GitWebhooks;
+namespace PersiLiao\GitWebhooks\Provider;
 
-use PersiLiao\Entity\Commit;
-use PersiLiao\Event\PushEvent;
-use PersiLiao\Provider\AbstractProvider;
+use PersiLiao\GitWebhooks\Entity\Commit;
+use PersiLiao\GitWebhooks\Event\PushEvent;
 
 class GithubProvider extends AbstractProvider
 {
@@ -26,7 +25,6 @@ class GithubProvider extends AbstractProvider
     {
         // TODO: Implement createPushEvent() method.
     }
-
 
     protected function createCommit(array $data): Commit
     {

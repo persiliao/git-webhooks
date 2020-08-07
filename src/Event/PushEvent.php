@@ -7,10 +7,9 @@
 
 declare(strict_types=1);
 
-namespace PersiLiao\Event;
+namespace PersiLiao\GitWebhooks\Event;
 
-use PersiLiao\Entity\Commit;
-use PersiLiao\GitWebhooks\Event\AbstractEvent;
+use PersiLiao\GitWebhooks\Entity\Commit;
 use function array_merge;
 
 class PushEvent extends AbstractEvent

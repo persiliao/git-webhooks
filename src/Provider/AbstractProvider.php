@@ -7,15 +7,14 @@
 
 declare(strict_types=1);
 
-namespace PersiLiao\Provider;
+namespace PersiLiao\GitWebhooks\Provider;
 
 use Closure;
-use PersiLiao\Entity\Commit;
-use PersiLiao\Event\PushEvent;
-use PersiLiao\Exception\InvalidArgumentException;
+use PersiLiao\GitWebhooks\Entity\Commit;
 use PersiLiao\GitWebhooks\Event\AbstractEvent;
+use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\EventHandlerInterface;
-use PersiLiao\GitWebhooks\ProviderInterface;
+use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use function call_user_func;
 use function error_log;

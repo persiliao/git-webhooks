@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace PersiLiao\GitWebhooks;
 
-use PersiLiao\Entity\Repository;
-use PersiLiao\Exception\InvalidArgumentException;
+use PersiLiao\GitWebhooks\Entity\Repository;
+use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use function strpos;
 use function substr;
 

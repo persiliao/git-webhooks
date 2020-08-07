@@ -7,14 +7,13 @@
 
 declare(strict_types=1);
 
-namespace PersiLiao\GitWebhooks;
+namespace PersiLiao\GitWebhooks\Provider;
 
 use Carbon\Carbon;
-use PersiLiao\Entity\Commit;
-use PersiLiao\Entity\User;
-use PersiLiao\Event\PushEvent;
-use PersiLiao\Exception\InvalidArgumentException;
-use PersiLiao\Provider\AbstractProvider;
+use PersiLiao\GitWebhooks\Entity\Commit;
+use PersiLiao\GitWebhooks\Entity\User;
+use PersiLiao\GitWebhooks\Event\PushEvent;
+use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use function strtolower;
 
 class GiteaProvider extends AbstractProvider

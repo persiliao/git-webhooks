@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace PersiLiao\Exception;
+namespace PersiLiao\GitWebhooks\Exception;
 
 class InvalidArgumentException extends \InvalidArgumentException
 {

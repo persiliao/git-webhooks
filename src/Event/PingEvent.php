@@ -7,9 +7,7 @@
 
 declare(strict_types=1);
 
-namespace PersiLiao\Event;
-
-use PersiLiao\GitWebhooks\Event\AbstractEvent;
+namespace PersiLiao\GitWebhooks\Event;
 
 class PingEvent extends AbstractEvent
 {

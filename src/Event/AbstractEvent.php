@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace PersiLiao\GitWebhooks\Event;
 
-use PersiLiao\Entity\Repository;
-use PersiLiao\Entity\User;
+use PersiLiao\GitWebhooks\Entity\Repository;
+use PersiLiao\GitWebhooks\Entity\User;
 
 abstract class AbstractEvent
 {

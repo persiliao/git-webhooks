@@ -7,10 +7,9 @@
 
 declare(strict_types=1);
 
-namespace PersiLiao\Entity;
+namespace PersiLiao\GitWebhooks\Entity;
 
 use Carbon\Carbon;
-use DateTime;
 
 class Commit
 {

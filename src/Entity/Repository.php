@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace PersiLiao\Entity;
+namespace PersiLiao\GitWebhooks\Entity;
 
 class Repository
 {

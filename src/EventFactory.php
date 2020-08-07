@@ -10,9 +10,10 @@ declare(strict_types=1);
 namespace PersiLiao\GitWebhooks;
 
 use Closure;
-use PersiLiao\Event\PingEvent;
-use PersiLiao\Event\PushEvent;
 use PersiLiao\GitWebhooks\Event\AbstractEvent;
+use PersiLiao\GitWebhooks\Event\PingEvent;
+use PersiLiao\GitWebhooks\Event\PushEvent;
+use PersiLiao\GitWebhooks\Provider\ProviderInterface;
 
 /**
  * @author Persi.Liao
@@ -33,7 +34,7 @@ use PersiLiao\GitWebhooks\Event\AbstractEvent;
  * @method $this onMember(Closure $handler) - Collaborator added to a repository.
  * @method $this onMilestone(Closure $handler) - Milestone created, closed, opened, edited, or deleted.
  * @method $this onPageBuild(Closure $handler) - Pages site built.
- * @method $this onPrivateToPublic(Closure $handler) - Repository changes from private to public.
+ * @method $this onPrivateToPublic(Closure $handler) - Repository changes from private to public .
  * @method $this onPullRequest(Closure $handler) - Pull request opened, closed, reopened, edited, assigned, unassigned, labeled, unlabeled, or synchronized.
  * @method $this onPullRequestReview(Closure $handler) - Pull request review submitted.
  * @method $this onPullRequestReviewComment(Closure $handler) - Pull request diff comment created, edited, or deleted.

@@ -7,11 +7,7 @@
 
 declare(strict_types=1);
 
-namespace PersiLiao\GitWebhooks;
-
-use PersiLiao\GitWebhooks\Event\AbstractEvent;
-use PersiLiao\Provider\AbstractProvider;
-use Symfony\Component\HttpFoundation\Request;
+namespace PersiLiao\GitWebhooks\Provider;
 
 class GogsProvider extends GiteaProvider
 {
