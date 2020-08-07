@@ -20,4 +20,9 @@ class GithubProvider extends AbstractProvider
     {
         // TODO: Implement create() method.
     }
+
+    protected function createCommit(array $data)
+    {
+        // TODO: Implement createCommit() method.
+    }
 }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace PersiLiao\Entity;
 
+use Carbon\Carbon;
 use DateTime;
 
 class Commit
@@ -19,7 +20,7 @@ class Commit
     private $id;
 
     /**
-     * @var string
+     * @var User
      */
     private $author;
 
@@ -29,7 +30,7 @@ class Commit
     private $message;
 
     /**
-     * @var DateTime
+     * @var Carbon
      */
     private $date;
 
@@ -37,6 +38,16 @@ class Commit
      * @var string[]
      */
     private $modifieds = [];
+
+    /**
+     * @var string[]
+     */
+    private $removeds = [];
+
+    /**
+     * @var string[]
+     */
+    private $addeds = [];
 
     /**
      * @return string
@@ -57,18 +68,18 @@ class Commit
     }
 
     /**
-     * @return string
+     * @return User
      */
-    public function getAuthor(): string
+    public function getAuthor(): User
     {
         return $this->author;
     }
 
     /**
-     * @param string $author
+     * @param User $author
      * @return Commit
      */
-    public function setAuthor(string $author): Commit
+    public function setAuthor(User $author): Commit
     {
         $this->author = $author;
         return $this;
@@ -93,18 +104,18 @@ class Commit
     }
 
     /**
-     * @return DateTime
+     * @return Carbon
      */
-    public function getDate(): DateTime
+    public function getDate(): Carbon
     {
         return $this->date;
     }
 
     /**
-     * @param DateTime $date
+     * @param Carbon $date
      * @return Commit
      */
-    public function setDate(DateTime $date): Commit
+    public function setDate(Carbon $date): Commit
     {
         $this->date = $date;
         return $this;
@@ -125,6 +136,42 @@ class Commit
     public function setModifieds(array $modifieds): Commit
     {
         $this->modifieds = $modifieds;
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRemoveds(): array
+    {
+        return $this->removeds;
+    }
+
+    /**
+     * @param string[] $removeds
+     * @return Commit
+     */
+    public function setRemoveds(array $removeds): Commit
+    {
+        $this->removeds = $removeds;
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAddeds(): array
+    {
+        return $this->addeds;
+    }
+
+    /**
+     * @param string[] $addeds
+     * @return Commit
+     */
+    public function setAddeds(array $addeds): Commit
+    {
+        $this->addeds = $addeds;
         return $this;
     }
 }

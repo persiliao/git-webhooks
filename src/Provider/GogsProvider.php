@@ -13,12 +13,7 @@ use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\Provider\AbstractProvider;
 use Symfony\Component\HttpFoundation\Request;
 
-class GogsProvider extends AbstractProvider
+class GogsProvider extends GiteaProvider
 {
     protected $provider = 'Gogs';
-
-    public function create()
-    {
-        // TODO: Implement create() method.
-    }
 }

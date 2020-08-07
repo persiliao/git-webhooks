@@ -11,6 +11,7 @@ namespace PersiLiao\Event;
 
 use PersiLiao\Entity\Commit;
 use PersiLiao\GitWebhooks\Event\AbstractEvent;
+use function array_merge;
 
 class PushEvent extends AbstractEvent
 {
@@ -158,6 +159,18 @@ class PushEvent extends AbstractEvent
     }
 
     /**
+     * @return string[]
+     */
+    public function getModifieds(): array
+    {
+        $modifieds = [];
+        foreach($this->getCommits() as $commit){
+            $modifieds = array_merge($modifieds, $commit->getModifieds());
+        }
+        return $modifieds;
+    }
+
+    /**
      * @return Commit[]
      */
     public function getCommits(): array
@@ -173,5 +186,29 @@ class PushEvent extends AbstractEvent
     {
         $this->commits = $commits;
         return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAddeds(): array
+    {
+        $addeds = [];
+        foreach($this->getCommits() as $commit){
+            $addeds = array_merge($addeds, $commit->getAddeds());
+        }
+        return $addeds;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRemoves(): array
+    {
+        $removeds = [];
+        foreach($this->getCommits() as $commit){
+            $removeds = array_merge($removeds, $commit->getRemoveds());
+        }
+        return $removeds;
     }
 }
