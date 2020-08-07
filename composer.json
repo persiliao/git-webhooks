@@ -1,0 +1,22 @@
+{
+    "name": "persiliao/git-webhooks",
+    "description": "normalise webhook events for github, gitlab and bitbucket",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "PersiLiao",
+            "email": "xiangchu.liao@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">7.2",
+        "ext-json": "*",
+        "symfony/http-foundation": "^5.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "PersiLiao\\GitWebhooks": "src/"
+        }
+    }
+}
