@@ -10,13 +10,14 @@
         }
     ],
     "require": {
-        "php": ">7.2",
+        "php": ">=7.2",
         "ext-json": "*",
-        "symfony/http-foundation": "^5.1"
+        "symfony/http-foundation": "^5.1",
+        "nesbot/carbon": "^2.38"
     },
     "autoload": {
         "psr-4": {
-            "PersiLiao\\GitWebhooks": "src/"
+            "PersiLiao\\GitWebhooks\\": "src/"
         }
     }
 }
