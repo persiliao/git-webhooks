@@ -15,6 +15,7 @@ use PersiLiao\Entity\User;
 use PersiLiao\Event\PushEvent;
 use PersiLiao\Exception\InvalidArgumentException;
 use PersiLiao\Provider\AbstractProvider;
+use function strtolower;
 
 class GiteaProvider extends AbstractProvider
 {
@@ -23,7 +24,8 @@ class GiteaProvider extends AbstractProvider
     public function create()
     {
         $payload = $this->getPayloadData();
-        switch($this->request->headers->get($this->getHeaderEvent())){
+        $event = strtolower($this->request->headers->get($this->getHeaderEventKey()));
+        switch($event){
             case 'push':
             {
                 return $this->createPushEvent($payload);
@@ -35,7 +37,7 @@ class GiteaProvider extends AbstractProvider
         }
     }
 
-    private function createPushEvent(array $payload)
+    protected function createPushEvent(array $payload): PushEvent
     {
         $event = new PushEvent();
         $event->setProvider($this->provider);
@@ -54,7 +56,7 @@ class GiteaProvider extends AbstractProvider
         return $event;
     }
 
-    protected function createCommit(array $data)
+    protected function createCommit(array $data): Commit
     {
         $commit = new Commit();
         $commit->setId($data['id']);

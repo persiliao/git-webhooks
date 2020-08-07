@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace PersiLiao\GitWebhooks;
 
+use Closure;
 use PersiLiao\Event\PingEvent;
 use PersiLiao\Event\PushEvent;
 use PersiLiao\GitWebhooks\Event\AbstractEvent;
@@ -49,6 +50,17 @@ class EventFactory
             }
 
             return $provider->create();
+        }
+    }
+
+    public function __call($name, $arguments)
+    {
+        foreach($this->providers as $provider){
+            if(!$provider->support()){
+                continue;
+            }
+
+            $provider->addHandle($name, $arguments[0], $arguments[1]);
         }
     }
 }

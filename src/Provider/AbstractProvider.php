@@ -9,15 +9,27 @@ declare(strict_types=1);
 
 namespace PersiLiao\Provider;
 
+use Closure;
 use PersiLiao\Entity\Commit;
+use PersiLiao\Event\PushEvent;
 use PersiLiao\Exception\InvalidArgumentException;
+use PersiLiao\GitWebhooks\Event\AbstractEvent;
+use PersiLiao\GitWebhooks\EventHandlerInterface;
 use PersiLiao\GitWebhooks\ProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use function call_user_func;
+use function error_log;
+use function is_string;
 use function json_decode;
 use function sprintf;
 
-abstract class AbstractProvider implements ProviderInterface
+abstract class AbstractProvider implements ProviderInterface, EventHandlerInterface
 {
+    /**
+     * @var string[]
+     */
+    protected $events;
+
     /**
      * @var string
      */
@@ -36,12 +48,17 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      * @var string
      */
-    protected $headerEvent;
+    protected $headerEventKey;
 
     /**
      * @var string
      */
-    protected $headerSignature;
+    protected $headerSignatureKey;
+
+    /**
+     * @var string
+     */
+    protected $eventName;
 
     /**
      * AbstractProvider constructor.
@@ -51,8 +68,8 @@ abstract class AbstractProvider implements ProviderInterface
     {
         $this->request = $request;
         $provider = $this->getProvider();
-        $this->headerEvent = sprintf('X-%s-Event', $provider);
-        $this->headerSignature = sprintf('X-%s-Signature', $provider);
+        $this->headerEventKey = sprintf('X-%s-Event', $provider);
+        $this->headerSignatureKey = sprintf('X-%s-Signature', $provider);
         $this->setPayload();
     }
 
@@ -61,21 +78,24 @@ abstract class AbstractProvider implements ProviderInterface
      */
     public function getProvider(): string
     {
-        if(empty($this->provider)){
-            throw new InvalidArgumentException('Provider must be a string');
+        if(empty($this->provider) || !is_string($this->provider)){
+            throw new InvalidArgumentException(sprintf('%s $provider must be a string', static::class));
         }
         return $this->provider;
     }
 
     public function support(): bool
     {
-        return $this->isJson() && $this->request->headers->has($this->getHeaderEvent());
+        return $this->isJson() && $this->request->headers->has($this->getHeaderEventKey())
+            && $this->request->headers->has($this->getHeaderSignatureKey());
     }
 
     protected function isJson()
     {
-        if($this->request->getContentType() !== 'application/json'){
-            throw new InvalidArgumentException('Request content type not support');
+        $contentType = $this->request->getContentType();
+        if($contentType !== 'application/json'){
+            error_log(sprintf('%s Request content type %s not support', $this->getProvider(), $contentType));
+            return false;
         }
         return true;
     }
@@ -83,15 +103,23 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      * @return string
      */
-    public function getHeaderEvent(): string
+    public function getHeaderEventKey(): string
     {
-        return $this->headerEvent;
+        return $this->headerEventKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHeaderSignatureKey(): string
+    {
+        return $this->headerSignatureKey;
     }
 
     public function validate(string $secret): bool
     {
         if($this->genreateSignature($secret, $this->getPayload()) !== $this->getSignature()){
-            throw new InvalidArgumentException('Signature error');
+            error_log(sprintf('%s Signature check error', $this->getProvider()));
         }
         return true;
     }
@@ -116,25 +144,34 @@ abstract class AbstractProvider implements ProviderInterface
         return $this;
     }
 
-    protected function getSignature()
+    protected function getSignature(): string
     {
-        $signatureKey = $this->getHeaderSignature();
+        $signatureKey = $this->getHeaderSignatureKey();
         if($this->request->headers->has($signatureKey) === false){
-            throw new InvalidArgumentException('Signature must a string');
+            return '';
         }
         $signature = $this->request->headers->get($signatureKey);
         if(empty($signature)){
-            throw new InvalidArgumentException('Signature must a string');
+            return '';
         }
         return $signature;
+    }
+
+    public function addHandle(string $eventName, Closure $closure, AbstractEvent $event)
+    {
+        $requestEventName = $this->getEventName();
+        if(isset($this->events[$requestEventName]) && $this->events[$requestEventName] === $eventName){
+            return call_user_func($closure, $event);
+        }
+        throw new InvalidArgumentException(sprintf('%s Request Event not support', $this->getProvider()));
     }
 
     /**
      * @return string
      */
-    public function getHeaderSignature(): string
+    public function getEventName(): string
     {
-        return $this->headerSignature;
+        return $this->request->headers->get($this->headerEventKey);
     }
 
     protected function getPayloadData(): array
@@ -150,12 +187,14 @@ abstract class AbstractProvider implements ProviderInterface
     {
         $result = [];
 
-        foreach ($data as $row) {
+        foreach($data as $row){
             $result[] = $this->createCommit($row);
         }
 
         return $result;
     }
 
-    abstract protected function createCommit(array $data);
+    abstract protected function createCommit(array $data): Commit;
+
+    abstract protected function createPushEvent(array $payload): PushEvent;
 }
