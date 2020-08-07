@@ -1,6 +1,6 @@
 {
     "name": "persiliao/git-webhooks",
-    "description": "normalise webhook events for github, gitlab and bitbucket",
+    "description": "normalise webhook events for Github, Gitlab, Bitbucket, Gogs, Gitea",
     "type": "library",
     "license": "MIT",
     "authors": [
