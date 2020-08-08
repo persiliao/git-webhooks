@@ -53,8 +53,8 @@ try{
 ## Support 
 
 - [x] Gitea
-- [] Github
-- [] Gitlab
-- [] Gogs
+- [ ] Github
+- [ ] Gitlab
+- [ ] Gogs
 
 
