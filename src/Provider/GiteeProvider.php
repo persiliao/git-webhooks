@@ -33,7 +33,6 @@ class GiteeProvider extends AbstractProvider
     protected function getRequestEventName(): string
     {
         $eventName = strtolower(parent::getRequestEventName());
-        error_log('Gitee Request EventName:' . $eventName);
         if($eventName === 'push hook'){
             $eventName = PushEvent::EVENT_NAME;
         }
