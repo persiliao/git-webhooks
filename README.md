@@ -51,12 +51,12 @@ try{
 
 ## Support 
 
-- [ ] **Github**
+- [ ] **`Github`**
     - [x] `onPush` - Git push to a repository.
-- [ ] **Gitea**
+- [ ] **`Gitea`**
     - [x] `onPush` - Git push to a repository.
-- [ ] **Gogs**
+- [ ] **`Gogs`**
     - [x] `onPush` - Git push to a repository.
-- [ ] **Gitlab**
+- [ ] **`Gitlab`**
 
 
