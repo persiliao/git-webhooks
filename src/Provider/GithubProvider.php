@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use function hash_hmac;
 use function sprintf;
+use function strpos;
+use function substr;
 
 class GithubProvider extends AbstractProvider
 {
@@ -70,6 +72,13 @@ class GithubProvider extends AbstractProvider
     protected function genreateSignature(string $secret, string $payload)
     {
         return hash_hmac('sha1', $payload, $secret, false);
+    }
+
+    protected function parseSignature($signature): string
+    {
+        if(strpos('sha1=', $signature) !== false){
+            return substr($signature, 4);
+        }
     }
 
     protected function createCommit(array $data): Commit

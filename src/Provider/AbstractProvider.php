@@ -187,6 +187,11 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         if(empty($signature)){
             return '';
         }
+        return $this->parseSignature($signature);
+    }
+
+    protected function parseSignature($signature): string
+    {
         return $signature;
     }
 
