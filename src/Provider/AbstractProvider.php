@@ -20,12 +20,10 @@ use Symfony\Component\HttpFoundation\Response;
 use function array_key_exists;
 use function array_merge;
 use function call_user_func;
-use function error_log;
 use function is_string;
 use function json_decode;
 use function sprintf;
 use function strtolower;
-use function var_export;
 
 abstract class AbstractProvider implements ProviderInterface, EventHandlerInterface
 {
@@ -245,13 +243,13 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     {
         $requestEventName = $this->getEventName();
         $events = array_merge($this->defaultEvents, $this->events);
-        if(isset($events[$requestEventName]) && $events[$requestEventName] === $eventName){
+        if(!isset($events[$requestEventName]) || empty($events[$requestEventName])){
+            throw new InvalidArgumentException(sprintf('%s Request Event not support, %s', $this->getProvider(),
+                $requestEventName), Response::HTTP_BAD_REQUEST);
+        }
+        if($events[$requestEventName] === $eventName){
             return call_user_func($closure);
         }
-        error_log(var_export($eventName, true));
-        error_log(var_export($events, true));
-        throw new InvalidArgumentException(sprintf('%s Request Event not support, %s', $this->getProvider(),
-            $requestEventName), Response::HTTP_BAD_REQUEST);
     }
 
     /**
