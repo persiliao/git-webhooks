@@ -16,7 +16,6 @@ use PersiLiao\GitWebhooks\EventHandlerInterface;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use function call_user_func;
-use function error_log;
 use function is_string;
 use function json_decode;
 use function sprintf;
@@ -92,15 +91,15 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     public function support(): bool
     {
         return $this->isJson() && $this->request->headers->has($this->getHeaderEventKey())
-            && $this->request->headers->has($this->getHeaderSignatureKey()) && $this->validate();
+            && $this->request->headers->has($this->getHeaderSignatureKey());
     }
 
     protected function isJson()
     {
         $contentType = strtolower($this->request->getContentType());
         if($contentType !== 'json'){
-            error_log(sprintf('%s Request content type not support, %s', $this->getProvider(), $contentType));
-            return false;
+            throw new InvalidArgumentException(sprintf('%s Request content type not support, %s', $this->getProvider
+            (), $contentType));
         }
         return true;
     }
@@ -123,14 +122,49 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
 
     public function validate(): bool
     {
-        if(empty($this->secret)){
+        if(empty($this->getSignature())){
             return true;
         }
-        if($this->genreateSignature($this->secret, $this->getPayload()) !== $this->getSignature()){
-            error_log(sprintf('%s Signature check error', $this->getProvider()));
+
+        if(empty($this->getSecret())){
             return false;
         }
+
+        if($this->genreateSignature($this->secret, $this->getPayload()) !== $this->getSignature()){
+            throw new InvalidArgumentException(sprintf('%s Signature check error', $this->getProvider()));
+        }
         return true;
+    }
+
+    protected function getSignature(): string
+    {
+        $signatureKey = $this->getHeaderSignatureKey();
+        if($this->request->headers->has($signatureKey) === false){
+            return '';
+        }
+        $signature = $this->request->headers->get($signatureKey);
+        if(empty($signature)){
+            return '';
+        }
+        return $signature;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecret(): string
+    {
+        return $this->secret;
+    }
+
+    /**
+     * @param string $secret
+     * @return AbstractProvider
+     */
+    public function setSecret(string $secret): AbstractProvider
+    {
+        $this->secret = $secret;
+        return $this;
     }
 
     protected function genreateSignature(string $secret, string $payload)
@@ -153,19 +187,6 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return $this;
     }
 
-    protected function getSignature(): string
-    {
-        $signatureKey = $this->getHeaderSignatureKey();
-        if($this->request->headers->has($signatureKey) === false){
-            return '';
-        }
-        $signature = $this->request->headers->get($signatureKey);
-        if(empty($signature)){
-            return '';
-        }
-        return $signature;
-    }
-
     public function addHandle(string $eventName, Closure $closure)
     {
         $requestEventName = $this->getEventName();
@@ -181,24 +202,6 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     public function getEventName(): string
     {
         return $this->request->headers->get($this->headerEventKey);
-    }
-
-    /**
-     * @return string
-     */
-    public function getSecret(): string
-    {
-        return $this->secret;
-    }
-
-    /**
-     * @param string $secret
-     * @return AbstractProvider
-     */
-    public function setSecret(string $secret): AbstractProvider
-    {
-        $this->secret = $secret;
-        return $this;
     }
 
     protected function getPayloadData(): array

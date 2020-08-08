@@ -79,7 +79,7 @@ class Repository
             if(!$provider->support()){
                 continue;
             }
-
+            $provider->validate();
             return $provider->create();
         }
         throw new InvalidArgumentException('Git webhook not support');
