@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace PersiLiao\GitWebhooks\Provider;
 
 use PersiLiao\GitWebhooks\Entity\Commit;
+use PersiLiao\GitWebhooks\Entity\Repository;
 use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\GitWebhooks\Event\PingEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
@@ -54,6 +55,10 @@ class GithubProvider extends AbstractProvider
     {
         $event = new PingEvent();
         $event->setDescription($payload['repository']['description']);
+        $repository = new Repository();
+        $repository->setId($payload['repository']['id']);
+        $repository->setName($payload['repository']['name']);
+        $event->setRepository($repository);
         return $event;
     }
 
