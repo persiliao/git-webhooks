@@ -92,7 +92,7 @@ class Event
                 continue;
             }
 
-            $provider->addHandle($name, $arguments[0], $arguments[1]);
+            $provider->addHandle($name, $arguments[0]);
         }
     }
 }

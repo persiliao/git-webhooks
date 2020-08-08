@@ -43,7 +43,7 @@ class User
         $this->id = $id;
         return $this;
     }
-    
+
     /**
      * @return string
      */

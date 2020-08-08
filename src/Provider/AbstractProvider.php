@@ -157,13 +157,13 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return $signature;
     }
 
-    public function addHandle(string $eventName, Closure $closure, AbstractEvent $event)
+    public function addHandle(string $eventName, Closure $closure)
     {
         $requestEventName = $this->getEventName();
         if(isset($this->events[$requestEventName]) && $this->events[$requestEventName] === $eventName){
-            return call_user_func($closure, $event);
+            return call_user_func($closure);
         }
-        throw new InvalidArgumentException(sprintf('%s Request Event not support', $this->getProvider()));
+        throw new InvalidArgumentException(sprintf('Request Event not support, %s', $this->getProvider()));
     }
 
     /**

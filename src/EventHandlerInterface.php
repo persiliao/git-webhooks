@@ -14,5 +14,5 @@ use PersiLiao\GitWebhooks\Event\AbstractEvent;
 
 interface EventHandlerInterface
 {
-    public function addHandle(string $eventName, Closure $closure, AbstractEvent $event);
+    public function addHandle(string $eventName, Closure $closure);
 }
