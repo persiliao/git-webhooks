@@ -55,7 +55,9 @@ declare(strict_types=1);
 require __DIR__ . '/vendor/autoload.php';
 
 use PersiLiao\GitWebhooks\Provider\GiteaProvider;
-use PersiLiao\GitWebhooks\Provider\GithubProvider;use PersiLiao\GitWebhooks\Provider\GogsProvider;use PersiLiao\GitWebhooks\Repository;
+use PersiLiao\GitWebhooks\Provider\GithubProvider;
+use PersiLiao\GitWebhooks\Provider\GogsProvider;
+use PersiLiao\GitWebhooks\Repository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
