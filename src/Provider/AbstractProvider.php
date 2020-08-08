@@ -174,7 +174,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
      */
     public function getSecret(): string
     {
-        return $this->secret;
+        return $this->secret ?: '';
     }
 
     /**
