@@ -11,6 +11,7 @@ namespace PersiLiao\GitWebhooks\Provider;
 
 use Carbon\Carbon;
 use PersiLiao\GitWebhooks\Entity\Commit;
+use PersiLiao\GitWebhooks\Entity\Repository;
 use PersiLiao\GitWebhooks\Entity\User;
 use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
@@ -29,7 +30,7 @@ class GiteaProvider extends AbstractProvider
 
     public function create()
     {
-        $payload = $this->getPayloadData();
+        $payload = $this->getPayload();
         $event = strtolower($this->request->headers->get($this->getHeaderEventKey()));
         switch($event){
             case 'push':
@@ -59,6 +60,16 @@ class GiteaProvider extends AbstractProvider
             $user->setEmail($payload['pusher']['email']);
         }
         $event->setUser($user);
+
+        $repository = new Repository();
+        $repository->setName($payload['repository']['name']);
+        $repository->setId($payload['repository']['id']);
+        $repository->setFullName($payload['repository']['full_name']);
+        $repository->setDescription($payload['repository']['description']);
+        $repository->setHomepage($payload['repository']['html_url']);
+        $repository->setUrl($payload['repository']['clone_url']);
+        $event->setRepository($repository);
+
         $event->setCommits($this->createCommits($payload['commits']));
         $event->setBranchName(Util::getBranchName($payload['ref']));
         return $event;

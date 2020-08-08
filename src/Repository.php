@@ -14,7 +14,7 @@ use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\GitWebhooks\Event\PingEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
-use PersiLiao\GitWebhooks\Provider\ProviderInterface;
+use PersiLiao\GitWebhooks\Provider\AbstractProvider;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -49,22 +49,34 @@ use Symfony\Component\HttpFoundation\Response;
 class Repository
 {
     /**
-     * @var ProviderInterface[]
+     * @var AbstractProvider[]
      */
     protected $providers = [];
 
     /**
-     * EventFactory constructor.
-     * @param ProviderInterface[] $providers
+     * @var string[]
      */
-    public function __construct(array $providers)
+    protected $secrets = [];
+
+    /**
+     * EventFactory constructor.
+     * @param AbstractProvider[] $providers
+     */
+    public function __construct(array $providers, array $secrets = [])
     {
+        $this->secrets = $secrets;
         foreach($providers as $provider){
             $this->addProvider($provider);
         }
     }
 
-    public function addProvider(ProviderInterface $provider)
+    /**
+     *
+     * @param AbstractProvider $provider
+     *
+     * @return $this
+     */
+    public function addProvider(AbstractProvider $provider)
     {
         $this->providers[] = $provider;
 
@@ -80,8 +92,9 @@ class Repository
             if(!$provider->support()){
                 continue;
             }
-            $provider->validate();
-            return $provider->create();
+            $event = $provider->create();
+            $provider->validate($event, $this->secrets);
+            return $event;
         }
         throw new InvalidArgumentException('Git webhook not support', Response::HTTP_BAD_REQUEST);
     }

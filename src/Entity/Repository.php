@@ -28,6 +28,11 @@ class Repository
     /**
      * @var string
      */
+    private $fullName;
+
+    /**
+     * @var string
+     */
     private $namespace;
 
     /**
@@ -78,6 +83,24 @@ class Repository
     public function setName(string $name): Repository
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * @param string $fullName
+     * @return Repository
+     */
+    public function setFullName(string $fullName): Repository
+    {
+        $this->fullName = $fullName;
         return $this;
     }
 

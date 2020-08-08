@@ -11,6 +11,7 @@ namespace PersiLiao\GitWebhooks\Provider;
 
 use Closure;
 use PersiLiao\GitWebhooks\Entity\Commit;
+use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\EventHandlerInterface;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
@@ -46,7 +47,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     /**
      * @var string
      */
-    protected $payload;
+    protected $payloadRaw;
 
     /**
      * @var string
@@ -73,7 +74,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         $provider = $this->getProvider();
         $this->headerEventKey = sprintf('X-%s-Event', $provider);
         $this->headerSignatureKey = sprintf('X-%s-Signature', $provider);
-        $this->setPayload();
+        $this->setPayloadRaw();
         $this->setSecret($secret);
     }
 
@@ -130,17 +131,22 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return $this->headerSignatureKey;
     }
 
-    public function validate(): bool
+    public function validate(AbstractEvent $event, array $secrets = []): bool
     {
         if(empty($this->getSignature())){
             return true;
+        }
+
+        $repositoryName = $event->getRepository()->getName();
+        if(!empty($repositoryName) && isset($secrets[$repositoryName])){
+            $this->setSecret($secrets[$repositoryName]);
         }
 
         if(empty($this->getSecret())){
             return false;
         }
 
-        if($this->genreateSignature($this->secret, $this->getPayload()) !== $this->getSignature()){
+        if($this->genreateSignature($this->secret, $this->getPayloadRaw()) !== $this->getSignature()){
             throw new InvalidArgumentException(sprintf('%s Signature check error', $this->getProvider()),
                 Response::HTTP_UNAUTHORIZED);
         }
@@ -183,18 +189,18 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return hash_hmac('sha256', $payload, $secret, false);
     }
 
-    protected function getPayload()
+    protected function getPayloadRaw()
     {
-        return $this->payload;
+        return $this->payloadRaw;
     }
 
     /**
      * @param string $payload
      * @return AbstractProvider
      */
-    protected function setPayload(): AbstractProvider
+    protected function setPayloadRaw(): AbstractProvider
     {
-        $this->payload = $this->request->getContent();
+        $this->payloadRaw = $this->request->getContent();
         return $this;
     }
 
@@ -216,9 +222,9 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return $this->request->headers->get($this->headerEventKey);
     }
 
-    protected function getPayloadData(): array
+    protected function getPayload(): array
     {
-        return json_decode($this->getPayload(), true);
+        return json_decode($this->getPayloadRaw(), true);
     }
 
     /**

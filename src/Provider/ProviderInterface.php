@@ -22,5 +22,5 @@ interface ProviderInterface
      */
     public function create();
 
-    public function validate(): bool;
+    public function validate(AbstractEvent $event, array $secrets = []): bool;
 }
