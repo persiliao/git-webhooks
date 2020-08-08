@@ -3,6 +3,16 @@
     "description": "normalise webhook events for Github, Gitlab, Bitbucket, Gogs, Gitea",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "git",
+        "webhook",
+        "hook",
+        "github",
+        "gitlab",
+        "Bitbucket",
+        "gitea",
+        "gogs"
+    ],
     "authors": [
         {
             "name": "PersiLiao",
