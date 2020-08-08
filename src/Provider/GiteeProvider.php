@@ -14,10 +14,10 @@ use Carbon\Carbon;
 use PersiLiao\GitWebhooks\Entity\Commit;
 use PersiLiao\GitWebhooks\Entity\Repository;
 use PersiLiao\GitWebhooks\Entity\User;
-use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\Util;
 use Symfony\Component\HttpFoundation\Request;
+use function error_log;
 use function strtolower;
 
 class GiteeProvider extends AbstractProvider
@@ -33,8 +33,9 @@ class GiteeProvider extends AbstractProvider
     protected function getRequestEventName(): string
     {
         $eventName = strtolower(parent::getRequestEventName());
+        error_log('Gitee Request EventName:' . $eventName);
         if($eventName === 'push hook'){
-            return PushEvent::EVENT_NAME;
+            $eventName = PushEvent::EVENT_NAME;
         }
         return $eventName;
     }
