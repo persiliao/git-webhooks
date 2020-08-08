@@ -173,7 +173,8 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         }
 
         if(empty($this->getSecret())){
-            throw new InvalidArgumentException(sprintf('%s Signature check error', $this->getProvider()),
+            throw new InvalidArgumentException(sprintf('%s Signature check error, secret must a string',
+                $this->getProvider()),
                 Response::HTTP_UNAUTHORIZED);
         }
 
