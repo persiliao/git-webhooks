@@ -99,8 +99,7 @@ try{
 
 ## Contact
 
-<img src="https://raw.githubusercontent.com/persiliao/static-resources/master/image/wechat_persiliao.jpeg" width
-="120px"/>
+![WeChat_PersiLiao](https://raw.githubusercontent.com/persiliao/static-resources/master/image/wechat_persiliao_320.png)
 
 ## License
 
