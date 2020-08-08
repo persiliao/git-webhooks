@@ -21,6 +21,7 @@ use function error_log;
 use function is_string;
 use function json_decode;
 use function sprintf;
+use function strtolower;
 
 abstract class AbstractProvider implements ProviderInterface, EventHandlerInterface
 {
@@ -91,9 +92,9 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
 
     protected function isJson()
     {
-        $contentType = $this->request->getContentType();
-        if($contentType !== 'application/json'){
-            error_log(sprintf('%s Request content type %s not support', $this->getProvider(), $contentType));
+        $contentType = strtolower($this->request->getContentType());
+        if($contentType !== 'json'){
+            error_log(sprintf('%s Request content type not support, %s', $this->getProvider(), $contentType));
             return false;
         }
         return true;
