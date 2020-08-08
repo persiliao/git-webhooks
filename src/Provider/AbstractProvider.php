@@ -96,7 +96,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
 
     protected function isJson()
     {
-        $contentType = strtolower($this->request->getContentType());
+        $contentType = $this->request->getContentType();
         if($contentType !== 'json'){
             throw new InvalidArgumentException(sprintf('%s Request content type not support, %s', $this->getProvider
             (), $contentType));
