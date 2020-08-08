@@ -19,7 +19,6 @@ use function call_user_func;
 use function is_string;
 use function json_decode;
 use function sprintf;
-use function strtolower;
 
 abstract class AbstractProvider implements ProviderInterface, EventHandlerInterface
 {
@@ -90,8 +89,18 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
 
     public function support(): bool
     {
-        return $this->isJson() && $this->request->headers->has($this->getHeaderEventKey())
+        return $this->isPost() && $this->isJson() && $this->request->headers->has($this->getHeaderEventKey())
             && $this->request->headers->has($this->getHeaderSignatureKey());
+    }
+
+    protected function isPost(): bool
+    {
+        $method = $this->request->server->get('REQUEST_METHOD');
+        if($method !== Request::METHOD_POST){
+            throw new InvalidArgumentException(sprintf('%s Request method %s not support, Only supports POST', $this->getProvider
+            (), $method));
+        }
+        return true;
     }
 
     protected function isJson()
