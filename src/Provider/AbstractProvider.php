@@ -11,7 +11,6 @@ namespace PersiLiao\GitWebhooks\Provider;
 
 use Closure;
 use PersiLiao\GitWebhooks\Entity\Commit;
-use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\EventHandlerInterface;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
@@ -163,7 +162,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         if(isset($this->events[$requestEventName]) && $this->events[$requestEventName] === $eventName){
             return call_user_func($closure);
         }
-        throw new InvalidArgumentException(sprintf('Request Event not support, %s', $this->getProvider()));
+        throw new InvalidArgumentException(sprintf('%s Request Event not support, %s', $this->getProvider(), $requestEventName));
     }
 
     /**

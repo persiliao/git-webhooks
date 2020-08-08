@@ -20,6 +20,10 @@ class GiteaProvider extends AbstractProvider
 {
     protected $provider = 'Gitea';
 
+    protected $events = [
+        'push' => 'onPush',
+    ];
+
     public function create()
     {
         $payload = $this->getPayloadData();
