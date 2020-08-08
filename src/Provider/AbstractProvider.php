@@ -42,6 +42,11 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     /**
      * @var string
      */
+    protected $secret;
+
+    /**
+     * @var string
+     */
     protected $payload;
 
     /**
@@ -63,13 +68,14 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
      * AbstractProvider constructor.
      * @param Request $request
      */
-    final public function __construct(Request $request)
+    final public function __construct(Request $request, string $secret = '')
     {
         $this->request = $request;
         $provider = $this->getProvider();
         $this->headerEventKey = sprintf('X-%s-Event', $provider);
         $this->headerSignatureKey = sprintf('X-%s-Signature', $provider);
         $this->setPayload();
+        $this->setSecret($secret);
     }
 
     /**
@@ -86,7 +92,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     public function support(): bool
     {
         return $this->isJson() && $this->request->headers->has($this->getHeaderEventKey())
-            && $this->request->headers->has($this->getHeaderSignatureKey());
+            && $this->request->headers->has($this->getHeaderSignatureKey()) && $this->validate();
     }
 
     protected function isJson()
@@ -115,10 +121,14 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return $this->headerSignatureKey;
     }
 
-    public function validate(string $secret): bool
+    public function validate(): bool
     {
-        if($this->genreateSignature($secret, $this->getPayload()) !== $this->getSignature()){
+        if(empty($this->secret)){
+            return true;
+        }
+        if($this->genreateSignature($this->secret, $this->getPayload()) !== $this->getSignature()){
             error_log(sprintf('%s Signature check error', $this->getProvider()));
+            return false;
         }
         return true;
     }
@@ -171,6 +181,24 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     public function getEventName(): string
     {
         return $this->request->headers->get($this->headerEventKey);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecret(): string
+    {
+        return $this->secret;
+    }
+
+    /**
+     * @param string $secret
+     * @return AbstractProvider
+     */
+    public function setSecret(string $secret): AbstractProvider
+    {
+        $this->secret = $secret;
+        return $this;
     }
 
     protected function getPayloadData(): array
