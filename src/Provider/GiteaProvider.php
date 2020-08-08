@@ -35,7 +35,7 @@ class GiteaProvider extends AbstractProvider
             }
             default:
             {
-                throw new InvalidArgumentException('Git webhook event not support');
+                throw new InvalidArgumentException('%s Git webhook event not support, %s', $this->getProvider(), $event);
             }
         }
     }
