@@ -9,7 +9,13 @@ declare(strict_types=1);
 
 namespace PersiLiao\GitWebhooks\Exception;
 
+use Symfony\Component\HttpFoundation\Response;
+use Throwable;
+
 class InvalidArgumentException extends \InvalidArgumentException
 {
-
+    public function __construct($message = "", $code = Response::HTTP_FORBIDDEN, Throwable $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
 }
