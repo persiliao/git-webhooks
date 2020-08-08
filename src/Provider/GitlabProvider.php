@@ -95,9 +95,9 @@ class GitlabProvider extends AbstractProvider
         $event->setRef($payload['ref']);
 
         $user = new User();
-        $user->setName($payload['pusher']['user_name']);
-        if(isset($payload['pusher']['user_email']) && !empty($payload['pusher']['user_email'])){
-            $user->setEmail($payload['pusher']['user_email']);
+        $user->setName($payload['user_name']);
+        if(isset($payload['user_email']) && !empty($payload['user_email'])){
+            $user->setEmail($payload['user_email']);
         }
         $event->setUser($user);
 
