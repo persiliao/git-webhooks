@@ -13,16 +13,12 @@ use Carbon\Carbon;
 use PersiLiao\GitWebhooks\Entity\Commit;
 use PersiLiao\GitWebhooks\Entity\Repository;
 use PersiLiao\GitWebhooks\Entity\User;
-use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\GitWebhooks\Event\PingEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
-use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use PersiLiao\GitWebhooks\Util;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use function explode;
 use function hash_hmac;
-use function sprintf;
 use function strtolower;
 
 class GithubProvider extends AbstractProvider

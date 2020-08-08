@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace PersiLiao\GitWebhooks\Provider;
 
-
 use Carbon\Carbon;
 use PersiLiao\GitWebhooks\Entity\Commit;
 use PersiLiao\GitWebhooks\Entity\Repository;
@@ -17,7 +16,6 @@ use PersiLiao\GitWebhooks\Entity\User;
 use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\Util;
 use Symfony\Component\HttpFoundation\Request;
-use function error_log;
 use function strtolower;
 
 class GiteeProvider extends AbstractProvider

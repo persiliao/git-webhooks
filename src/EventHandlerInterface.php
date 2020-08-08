@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace PersiLiao\GitWebhooks;
 
 use Closure;
-use PersiLiao\GitWebhooks\Event\AbstractEvent;
 
 interface EventHandlerInterface
 {
