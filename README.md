@@ -56,6 +56,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use PersiLiao\GitWebhooks\Provider\GiteaProvider;
 use PersiLiao\GitWebhooks\Provider\GithubProvider;
+use PersiLiao\GitWebhooks\Provider\GitlabProvider;
 use PersiLiao\GitWebhooks\Provider\GogsProvider;
 use PersiLiao\GitWebhooks\Repository;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,16 +72,21 @@ try{
     ];
     $repository = new Repository([
         new GithubProvider($request),
+        new GitlabProvider($request),
         new GiteaProvider($request),
         new GogsProvider($request)
     ], $secrets);
     $event = $repository->createEvent();
+    $repository->onPing(function() use ($event, $response){
+        // support Github
+        $response->setContent(sprintf('pong success %s',$event->getBranchName()));
+    });
     $repository->onPush(function() use ($event, $response){
         // do something...
         if($event->getBranchName() === 'master'){
             exec('cd /path/to/your/project && git pull');
         }
-        $response->setContent("git pull success");
+        $response->setContent('git pull success');
     });
 }catch(Exception $e){
     $response->setStatusCode($e->getCode())->setContent($e->getMessage());
