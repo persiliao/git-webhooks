@@ -1,6 +1,6 @@
 # Git Web Hooks
 
-normalise webhook events for Github, Gitlab, Bitbucket, Gogs, Gitea, Gitee
+normalise webhook events for Github, Gitlab, Gogs, Gitea, Gitee
 
 ## Installation (using composer)
 
