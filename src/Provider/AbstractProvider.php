@@ -241,7 +241,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
 
     public function addHandle(string $eventName, Closure $closure)
     {
-        $requestEventName = $this->getEventName();
+        $requestEventName = $this->getRequestEventName();
         $events = array_merge($this->defaultEvents, $this->events);
         if(!isset($events[$requestEventName]) || empty($events[$requestEventName])){
             throw new InvalidArgumentException(sprintf('%s Request Event not support, %s', $this->getProvider(),
@@ -255,11 +255,6 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     /**
      * @return string
      */
-    public function getEventName(): string
-    {
-        return $this->request->headers->get($this->headerEventKey);
-    }
-
     protected function getRequestEventName(): string
     {
         return strtolower($this->request->headers->get($this->getHeaderEventKey()) ?: '');
