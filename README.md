@@ -52,11 +52,11 @@ try{
 ## Support 
 
 - [ ] Gitea
-    - [x] Push
+    - [x] `onPush` - Git push to a repository.
 - [ ] Github
-    - [x] Push
+    - [x] `onPush` - Git push to a repository.
 - [ ] Gogs
-    - [x] Push
+    - [x] `onPush` - Git push to a repository.
 - [ ] Gitlab
 
 
