@@ -32,16 +32,10 @@ class GitlabProvider extends AbstractProvider
     {
         $payload = $this->getPayload();
         $eventName = strtolower($payload['event_name']);
-        switch($eventName){
-            case PushEvent::EVENT_NAME:
-            {
-                return $eventName;
-            }
-            default:
-            {
-                return $eventName;
-            }
+        if($eventName === PushEvent::EVENT_NAME){
+            return $eventName;
         }
+        return $eventName;
     }
 
     protected function createPushEvent(array $payload): PushEvent

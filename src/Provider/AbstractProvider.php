@@ -11,6 +11,7 @@ namespace PersiLiao\GitWebhooks\Provider;
 
 use Closure;
 use PersiLiao\GitWebhooks\Entity\Commit;
+use PersiLiao\GitWebhooks\Entity\Repository;
 use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\GitWebhooks\Event\PingEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
@@ -20,7 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use function array_key_exists;
 use function array_merge;
-use function call_user_func;
 use function is_string;
 use function json_decode;
 use function sprintf;
@@ -113,7 +113,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return true;
     }
 
-    protected function isJson()
+    protected function isJson(): bool
     {
         $contentType = $this->request->getContentType();
         if($contentType !== 'json'){
@@ -226,15 +226,11 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return hash_hmac('sha256', $payload, $secret, false);
     }
 
-    protected function getPayloadRaw()
+    protected function getPayloadRaw(): string
     {
         return $this->payloadRaw;
     }
 
-    /**
-     * @param string $payload
-     * @return AbstractProvider
-     */
     protected function setPayloadRaw(): AbstractProvider
     {
         $this->payloadRaw = $this->request->getContent();
@@ -250,7 +246,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
                 $requestEventName), Response::HTTP_BAD_REQUEST);
         }
         if($events[$requestEventName] === $eventName){
-            return call_user_func($closure);
+            return $closure();
         }
     }
 
@@ -288,13 +284,24 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return json_decode($this->getPayloadRaw(), true);
     }
 
+    protected function createPingEvent(array $payload): PingEvent
+    {
+        $event = new PingEvent();
+        $event->setDescription($payload['repository']['description']);
+        $repository = new Repository();
+        $repository->setId($payload['repository']['id']);
+        $repository->setName($payload['repository']['name']);
+        $event->setRepository($repository);
+        return $event;
+    }
+
     abstract protected function createPushEvent(array $payload): PushEvent;
 
     /**
      * @param array $data
      * @return Commit[]
      */
-    protected function createCommits(array $data)
+    protected function createCommits(array $data): array
     {
         $result = [];
 

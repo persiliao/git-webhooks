@@ -31,17 +31,6 @@ class GithubProvider extends AbstractProvider
         $this->setHeaderSignatureKey('X-Hub-Signature');
     }
 
-    protected function createPingEvent(array $payload): PingEvent
-    {
-        $event = new PingEvent();
-        $event->setDescription($payload['repository']['description']);
-        $repository = new Repository();
-        $repository->setId($payload['repository']['id']);
-        $repository->setName($payload['repository']['name']);
-        $event->setRepository($repository);
-        return $event;
-    }
-
     protected function createPushEvent(array $payload): PushEvent
     {
         $event = new PushEvent();
@@ -78,7 +67,7 @@ class GithubProvider extends AbstractProvider
 
     protected function parseSignature($signature): string
     {
-        list($shaName, $sign) = explode('=', $signature);
+        [ $shaName, $sign ] = explode('=', $signature);
         if(strtolower($shaName) !== 'sha1'){
             return '';
         }

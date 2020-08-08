@@ -20,9 +20,9 @@ class Util
      * @param string $ref
      * @return string
      */
-    public static function getBranchName($ref)
+    public static function getBranchName($ref): string
     {
-        if(self::getPushType($ref) != Repository::TYPE_BRANCH){
+        if(self::getPushType($ref) !== Repository::TYPE_BRANCH){
             throw new InvalidArgumentException("Branch ref isn't a branch");
         }
 
@@ -33,7 +33,7 @@ class Util
      * @param string $ref
      * @return string
      */
-    public static function getPushType($ref)
+    public static function getPushType($ref): string
     {
         if(strpos($ref, 'refs/tags/') === 0){
             return Repository::TYPE_TAG;
@@ -50,9 +50,9 @@ class Util
      * @param string $ref
      * @return string
      */
-    public static function getTagName($ref)
+    public static function getTagName($ref): string
     {
-        if(self::getPushType($ref) != Repository::TYPE_TAG){
+        if(self::getPushType($ref) !== Repository::TYPE_TAG){
             throw new InvalidArgumentException("Tag ref isn't a tag");
         }
 

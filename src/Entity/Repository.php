@@ -11,9 +11,9 @@ namespace PersiLiao\GitWebhooks\Entity;
 
 class Repository
 {
-    const BRANCH_MASTER = 'master';
-    const TYPE_BRANCH = 'branch';
-    const TYPE_TAG = 'tag';
+    public const BRANCH_MASTER = 'master';
+    public const TYPE_BRANCH = 'branch';
+    public const TYPE_TAG = 'tag';
 
     /**
      * @var int

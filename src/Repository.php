@@ -60,8 +60,9 @@ class Repository
     protected $secrets = [];
 
     /**
-     * EventFactory constructor.
-     * @param AbstractProvider[] $providers
+     * Repository constructor.
+     * @param array $providers
+     * @param array $secrets
      */
     public function __construct(array $providers, array $secrets = [])
     {
@@ -77,7 +78,7 @@ class Repository
      *
      * @return $this
      */
-    public function addProvider(AbstractProvider $provider)
+    public function addProvider(AbstractProvider $provider): self
     {
         $this->providers[] = $provider;
 
