@@ -41,7 +41,7 @@ composer require persiliao/git-webhooks:dev-master
 - [ ] **Gogs**
     - [x] `onPush` - Git push to a repository.
 - [ ] **Gitlab**
-
+    - [x] `onPush` - Git push to a repository.
 
 ## Examples
 
