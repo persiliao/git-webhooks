@@ -46,6 +46,8 @@ composer require persiliao/git-webhooks:dev-master
     - [x] `onPush` - Git push to a repository.
 - [ ] **Gitlab**
     - [x] `onPush` - Git push to a repository.
+- [ ] **Gitee**
+    - [x] `onPush` - Git push to a repository.
 
 ## Examples
 
