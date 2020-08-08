@@ -73,7 +73,7 @@ class Repository
     /**
      * @return AbstractEvent|PushEvent|PingEvent
      */
-    public function create(): AbstractEvent
+    public function createEvent(): AbstractEvent
     {
         foreach($this->providers as $provider){
             if(!$provider->support()){
