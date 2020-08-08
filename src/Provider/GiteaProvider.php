@@ -50,7 +50,6 @@ class GiteaProvider extends AbstractProvider
         $event->setRef($payload['ref']);
 
         $user = new User();
-        $user->setId($payload['pusher']['id']);
         $user->setName($payload['pusher']['full_name']);
         if(isset($payload['pusher']['email']) && !empty($payload['pusher']['email'])){
             $user->setEmail($payload['pusher']['email']);
