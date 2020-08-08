@@ -35,7 +35,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     /**
      * @var string[]
      */
-    protected $events;
+    protected $events = [];
 
     /**
      * @var string
