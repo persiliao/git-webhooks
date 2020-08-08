@@ -55,6 +55,7 @@ declare(strict_types=1);
 require __DIR__ . '/vendor/autoload.php';
 
 use PersiLiao\GitWebhooks\Provider\GiteaProvider;
+use PersiLiao\GitWebhooks\Provider\GiteeProvider;
 use PersiLiao\GitWebhooks\Provider\GithubProvider;
 use PersiLiao\GitWebhooks\Provider\GitlabProvider;
 use PersiLiao\GitWebhooks\Provider\GogsProvider;
@@ -74,6 +75,7 @@ try{
         new GithubProvider($request),
         new GitlabProvider($request),
         new GiteaProvider($request),
+        new GiteeProvider($request),
         new GogsProvider($request)
     ], $secrets);
     $event = $repository->createEvent();
