@@ -10,7 +10,7 @@ composer require persiliao/git-webhooks
 
 #### Examples
 
-###### Example #1
+###### Example
 automatically `git pull` on your server after every push
 
 ```php
