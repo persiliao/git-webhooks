@@ -51,7 +51,7 @@ try{
 
 ## Support 
 
-- [] Gitea
+- [ ] Gitea
     [x] Push
 - [ ] Github
     [x] Push
