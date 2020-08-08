@@ -23,14 +23,14 @@ composer require persiliao/git-webhooks:dev-master
     - [ ] `onDeploymentStatus` - Deployment status updated from the API.
     - [ ] `onFork` - Repository forked.
     - [ ] `onIssueComment` - Issue comment created, edited, or deleted.
-    - [ ] `onIssues` - Issue opened, edited, closed, reopened, assigned, unassigned, labeled, unlabeled, milestoned, or
- demilestoned.
+    - [ ] `onIssues` - Issue opened, edited, closed, reopened, assigned, unassigned, labeled, unlabeled, milestoned
+    , or demilestoned.
     - [ ] `onLabel` - Label created or deleted.
     - [ ] `onMember` - Collaborator added to a repository.
     - [ ] `onMilestone` - Milestone created, closed, opened, edited, or deleted.
     - [ ] `onPageBuild` - Pages site built.
-    - [ ] `onPullRequest` - Pull request opened, closed, reopened, edited, assigned, unassigned, labeled, unlabeled, or
- synchronized.
+    - [ ] `onPullRequest` - Pull request opened, closed, reopened, edited, assigned, unassigned, labeled, unlabeled
+    , or synchronized.
     - [ ] `onRelease` - Release published in a repository.
     - [ ] `onStatus` - Commit status updated from the API.
     - [ ] `onWatch` - User stars a repository.
