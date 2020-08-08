@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use PersiLiao\GitWebhooks\Entity\Commit;
 use PersiLiao\GitWebhooks\Entity\Repository;
 use PersiLiao\GitWebhooks\Entity\User;
+use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use PersiLiao\GitWebhooks\Util;
@@ -28,7 +29,7 @@ class GiteaProvider extends AbstractProvider
         'push' => 'onPush',
     ];
 
-    public function create()
+    public function create(): AbstractEvent
     {
         $payload = $this->getPayload();
         $event = strtolower($this->request->headers->get($this->getHeaderEventKey()));

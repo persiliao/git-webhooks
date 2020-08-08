@@ -20,7 +20,7 @@ interface ProviderInterface
     /**
      * @return AbstractEvent|PushEvent|PingEvent
      */
-    public function create();
+    public function create(): AbstractEvent;
 
     public function validate(AbstractEvent $event, array $secrets = []): bool;
 }
