@@ -40,6 +40,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method $this onPullRequest(Closure $handler) - Pull request opened, closed, reopened, edited, assigned, unassigned, labeled, unlabeled, or synchronized.
  * @method $this onPullRequestReview(Closure $handler) - Pull request review submitted.
  * @method $this onPullRequestReviewComment(Closure $handler) - Pull request diff comment created, edited, or deleted.
+ * @method $this onPing(Closure $handler) - Git ping to a repository.
  * @method $this onPush(Closure $handler) - Git push to a repository.
  * @method $this onRelease(Closure $handler) - Release published in a repository.
  * @method $this onStatus(Closure $handler) - Commit status updated from the API.

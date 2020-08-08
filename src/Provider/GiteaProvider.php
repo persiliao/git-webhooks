@@ -19,7 +19,6 @@ use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use PersiLiao\GitWebhooks\Util;
 use Symfony\Component\HttpFoundation\Response;
 use function sprintf;
-use function strtolower;
 
 class GiteaProvider extends AbstractProvider
 {
@@ -32,7 +31,7 @@ class GiteaProvider extends AbstractProvider
     public function create(): AbstractEvent
     {
         $payload = $this->getPayload();
-        $event = strtolower($this->request->headers->get($this->getHeaderEventKey()));
+        $event = $this->getRequestEventName();
         switch($event){
             case 'push':
             {

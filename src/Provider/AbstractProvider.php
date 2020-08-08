@@ -22,6 +22,7 @@ use function call_user_func;
 use function is_string;
 use function json_decode;
 use function sprintf;
+use function strtolower;
 
 abstract class AbstractProvider implements ProviderInterface, EventHandlerInterface
 {
@@ -69,7 +70,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
      * AbstractProvider constructor.
      * @param Request $request
      */
-    final public function __construct(Request $request)
+    public function __construct(Request $request)
     {
         $this->request = $request;
         $provider = $this->getProvider();
@@ -124,11 +125,31 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     }
 
     /**
+     * @param string $headerEventKey
+     * @return AbstractProvider
+     */
+    public function setHeaderEventKey(string $headerEventKey): AbstractProvider
+    {
+        $this->headerEventKey = $headerEventKey;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getHeaderSignatureKey(): string
     {
         return $this->headerSignatureKey;
+    }
+
+    /**
+     * @param string $headerSignatureKey
+     * @return AbstractProvider
+     */
+    public function setHeaderSignatureKey(string $headerSignatureKey): AbstractProvider
+    {
+        $this->headerSignatureKey = $headerSignatureKey;
+        return $this;
     }
 
     public function validate(AbstractEvent $event, array $secrets = []): bool
@@ -223,6 +244,11 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     public function getEventName(): string
     {
         return $this->request->headers->get($this->headerEventKey);
+    }
+
+    protected function getRequestEventName(): string
+    {
+        return strtolower($this->request->headers->get($this->getHeaderEventKey()) ?: '');
     }
 
     protected function getPayload(): array

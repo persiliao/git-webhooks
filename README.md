@@ -20,19 +20,22 @@ declare(strict_types=1);
 require __DIR__ . '/vendor/autoload.php';
 
 use PersiLiao\GitWebhooks\Provider\GiteaProvider;
-use PersiLiao\GitWebhooks\Repository;
+use PersiLiao\GitWebhooks\Provider\GithubProvider;use PersiLiao\GitWebhooks\Provider\GogsProvider;use PersiLiao\GitWebhooks\Repository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 try{
     $response = new Response();
+    $request = Request::createFromGlobals();
     // Webhook Secret
     $secrets = [
         // 'repository name' => 'webhook secret'
         'git-webhooks' => '2IlCA4awiMB098FDboKzdxuOtyRPV76r'
     ];
     $repository = new Repository([
-        new GiteaProvider(Request::createFromGlobals())
+        new GithubProvider($request),
+        new GiteaProvider($request),
+        new GogsProvider($request)
     ], $secrets);
     $event = $repository->createEvent();
     $repository->onPush(function() use ($event, $response){
