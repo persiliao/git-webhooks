@@ -17,10 +17,10 @@ use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use function explode;
 use function hash_hmac;
 use function sprintf;
-use function strpos;
-use function substr;
+use function strtolower;
 
 class GithubProvider extends AbstractProvider
 {
@@ -76,9 +76,11 @@ class GithubProvider extends AbstractProvider
 
     protected function parseSignature($signature): string
     {
-        if(strpos($signature, 'sha1=') !== false){
-            return substr($signature, 4);
+        list($shaName, $sign) = explode('=', $signature);
+        if(strtolower($shaName) !== 'sha1'){
+            return '';
         }
+        return $sign;
     }
 
     protected function createCommit(array $data): Commit
