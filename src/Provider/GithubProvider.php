@@ -76,7 +76,7 @@ class GithubProvider extends AbstractProvider
 
     protected function parseSignature($signature): string
     {
-        if(strpos('sha1=', $signature) !== false){
+        if(strpos($signature, 'sha1=') !== false){
             return substr($signature, 4);
         }
     }
