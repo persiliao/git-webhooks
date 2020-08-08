@@ -52,8 +52,11 @@ try{
 ## Support 
 
 - [x] Gitea
+    - [x] Push
 - [ ] Github
-- [ ] Gitlab
+    - [x] Push
 - [ ] Gogs
+    - [x] Push
+- [ ] Gitlab
 
 
