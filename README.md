@@ -8,9 +8,9 @@ normalise webhook events for Github, Gitlab, Bitbucket, Gogs, Gitea
 composer require persiliao/git-webhooks
 ```
 
-####Examples
+#### Examples
 
-######Example #1
+###### Example #1
 automatically `git pull` on your server after every push
 
 ```php
