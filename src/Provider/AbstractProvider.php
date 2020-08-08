@@ -219,7 +219,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return $this;
     }
 
-    protected function genreateSignature(string $secret, string $payload)
+    protected function genreateSignature(string $secret, string $payload): string
     {
         return hash_hmac('sha256', $payload, $secret, false);
     }

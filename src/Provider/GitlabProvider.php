@@ -68,24 +68,6 @@ class GitlabProvider extends AbstractProvider
         }
     }
 
-    protected function createCommit(array $data): Commit
-    {
-        $commit = new Commit();
-        $commit->setId($data['id']);
-        $commit->setMessage($data['message']);
-        $commit->setDate(new Carbon($data['timestamp']));
-        $commit->setModifieds($data['modified'] ?? []);
-        $commit->setAddeds($data['added'] ?? []);
-        $commit->setRemoveds($data['removed'] ?? []);
-        $user = new User();
-        $user->setName($data['author']['name']);
-        if(isset($data['author']['email']) && !empty($data['author']['email'])){
-            $user->setEmail($data['author']['email']);
-        }
-        $commit->setAuthor($user);
-        return $commit;
-    }
-
     protected function createPushEvent(array $payload): PushEvent
     {
         $event = new PushEvent();
@@ -113,5 +95,28 @@ class GitlabProvider extends AbstractProvider
         $event->setCommits($this->createCommits($payload['commits']));
         $event->setBranchName(Util::getBranchName($payload['ref']));
         return $event;
+    }
+
+    protected function genreateSignature(string $secret, string $payload): string
+    {
+        return $secret;
+    }
+
+    protected function createCommit(array $data): Commit
+    {
+        $commit = new Commit();
+        $commit->setId($data['id']);
+        $commit->setMessage($data['message']);
+        $commit->setDate(new Carbon($data['timestamp']));
+        $commit->setModifieds($data['modified'] ?? []);
+        $commit->setAddeds($data['added'] ?? []);
+        $commit->setRemoveds($data['removed'] ?? []);
+        $user = new User();
+        $user->setName($data['author']['name']);
+        if(isset($data['author']['email']) && !empty($data['author']['email'])){
+            $user->setEmail($data['author']['email']);
+        }
+        $commit->setAuthor($user);
+        return $commit;
     }
 }

@@ -96,7 +96,7 @@ class GithubProvider extends AbstractProvider
         return $event;
     }
 
-    protected function genreateSignature(string $secret, string $payload)
+    protected function genreateSignature(string $secret, string $payload): string
     {
         return hash_hmac('sha1', $payload, $secret, false);
     }
