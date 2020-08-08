@@ -13,6 +13,7 @@ use Closure;
 use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\GitWebhooks\Event\PingEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
+use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use PersiLiao\GitWebhooks\Provider\ProviderInterface;
 
 /**
@@ -81,6 +82,7 @@ class Event
 
             return $provider->create();
         }
+        throw new InvalidArgumentException('Git webhook not support');
     }
 
     public function __call($name, $arguments)
