@@ -12,6 +12,7 @@ namespace PersiLiao\GitWebhooks\Provider;
 use Closure;
 use PersiLiao\GitWebhooks\Entity\Commit;
 use PersiLiao\GitWebhooks\Event\AbstractEvent;
+use PersiLiao\GitWebhooks\Event\PingEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\EventHandlerInterface;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
@@ -28,8 +29,8 @@ use function strtolower;
 abstract class AbstractProvider implements ProviderInterface, EventHandlerInterface
 {
     protected $defaultEvents = [
-        'push' => 'onPush',
-        'ping' => 'onPing'
+        PushEvent::EVENT_NAME => 'onPush',
+        PingEvent::EVENT_NAME => 'onPing'
     ];
 
     /**
@@ -260,10 +261,33 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         return strtolower($this->request->headers->get($this->getHeaderEventKey()) ?: '');
     }
 
+    public function create(): AbstractEvent
+    {
+        $payload = $this->getPayload();
+        $event = $this->getRequestEventName();
+        switch($event){
+            case PingEvent::EVENT_NAME:
+            {
+                return $this->createPingEvent($payload);
+            }
+            case PushEvent::EVENT_NAME:
+            {
+                return $this->createPushEvent($payload);
+            }
+            default:
+            {
+                throw new InvalidArgumentException(sprintf('%s Git webhook event not support, %s', $this->getProvider(),
+                    $event), Response::HTTP_FORBIDDEN);
+            }
+        }
+    }
+
     protected function getPayload(): array
     {
         return json_decode($this->getPayloadRaw(), true);
     }
+
+    abstract protected function createPushEvent(array $payload): PushEvent;
 
     /**
      * @param array $data
@@ -281,6 +305,4 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     }
 
     abstract protected function createCommit(array $data): Commit;
-
-    abstract protected function createPushEvent(array $payload): PushEvent;
 }

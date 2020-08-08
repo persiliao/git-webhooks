@@ -11,6 +11,7 @@ namespace PersiLiao\GitWebhooks\Event;
 
 class PingEvent extends AbstractEvent
 {
+    const EVENT_NAME = 'ping';
     /**
      * @var int
      */

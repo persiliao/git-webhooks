@@ -13,13 +13,9 @@ use Carbon\Carbon;
 use PersiLiao\GitWebhooks\Entity\Commit;
 use PersiLiao\GitWebhooks\Entity\Repository;
 use PersiLiao\GitWebhooks\Entity\User;
-use PersiLiao\GitWebhooks\Event\AbstractEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
-use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use PersiLiao\GitWebhooks\Util;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use function sprintf;
 use function strtolower;
 
 class GitlabProvider extends AbstractProvider
@@ -32,38 +28,18 @@ class GitlabProvider extends AbstractProvider
         $this->setHeaderSignatureKey('X-Gitlab-Token');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function create(): AbstractEvent
-    {
-        $payload = $this->getPayload();
-        $event = $this->getRequestEventName();
-        switch($event){
-            case 'push':
-            {
-                return $this->createPushEvent($payload);
-            }
-            default:
-            {
-                throw new InvalidArgumentException(sprintf('%s Git webhook event not support, %s', $this->getProvider(),
-                    $event), Response::HTTP_FORBIDDEN);
-            }
-        }
-    }
-
     protected function getRequestEventName(): string
     {
         $payload = $this->getPayload();
         $eventName = strtolower($payload['event_name']);
         switch($eventName){
-            case 'push':
+            case PushEvent::EVENT_NAME:
             {
-                return 'push';
+                return $eventName;
             }
             default:
             {
-                return '';
+                return $eventName;
             }
         }
     }

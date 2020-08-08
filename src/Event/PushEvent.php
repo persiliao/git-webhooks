@@ -14,6 +14,7 @@ use function array_merge;
 
 class PushEvent extends AbstractEvent
 {
+    const EVENT_NAME = 'push';
     /**
      * @var string
      */

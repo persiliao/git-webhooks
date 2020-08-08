@@ -24,23 +24,6 @@ class GiteaProvider extends AbstractProvider
 {
     protected $provider = 'Gitea';
 
-    public function create(): AbstractEvent
-    {
-        $payload = $this->getPayload();
-        $event = $this->getRequestEventName();
-        switch($event){
-            case 'push':
-            {
-                return $this->createPushEvent($payload);
-            }
-            default:
-            {
-                throw new InvalidArgumentException(sprintf('%s Git webhook event not support, %s', $this->getProvider(),
-                    $event), Response::HTTP_FORBIDDEN);
-            }
-        }
-    }
-
     protected function createPushEvent(array $payload): PushEvent
     {
         $event = new PushEvent();
