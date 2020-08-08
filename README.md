@@ -14,7 +14,7 @@ composer require persiliao/git-webhooks:dev-master
 
 ## Supported Events
 
-- [ ] **Github**
+- **Github**
     - [x] `onPing` - Add webhook to a repository.
     - [x] `onPush` - Git push to a repository.
     - [ ] `onCreate` - Branch or tag created.
@@ -34,13 +34,13 @@ composer require persiliao/git-webhooks:dev-master
     - [ ] `onRelease` - Release published in a repository.
     - [ ] `onStatus` - Commit status updated from the API.
     - [ ] `onWatch` - User stars a repository.
-- [ ] **Gitea**
+- **Gitea**
     - [x] `onPush` - Git push to a repository.
-- [ ] **Gogs**
+- **Gogs**
     - [x] `onPush` - Git push to a repository.
-- [ ] **Gitlab**
+- **Gitlab**
     - [x] `onPush` - Git push to a repository.
-- [ ] **Gitee**
+- **Gitee**
     - [x] `onPush` - Git push to a repository.
 
 ## Examples
