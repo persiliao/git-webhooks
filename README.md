@@ -55,6 +55,8 @@ try{
 ## Support 
 
 - [ ] **Github**
+    - [x] `onPing` - Add webhook to a repository.
+    - [x] `onPush` - Git push to a repository.
     - [ ] `onCommitComment` - Commit or diff commented on.
     - [ ] `onCreate` - Branch or tag created.
     - [ ] `onDelete` - Branch or tag deleted.
@@ -74,7 +76,6 @@ try{
  synchronized.
     - [ ] `onPullRequestReview` - Pull request review submitted.
     - [ ] `onPullRequestReviewComment` - Pull request diff comment created, edited, or deleted.
-    - [x] `onPush` - Git push to a repository.
     - [ ] `onRelease` - Release published in a repository.
     - [ ] `onStatus` - Commit status updated from the API.
     - [ ] `onTeamAdd` - Team added or modified on a repository.
