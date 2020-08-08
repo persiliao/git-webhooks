@@ -14,6 +14,9 @@ use PersiLiao\GitWebhooks\Entity\Commit;
 use PersiLiao\GitWebhooks\Entity\User;
 use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
+use PersiLiao\GitWebhooks\Util;
+use Symfony\Component\HttpFoundation\Response;
+use function sprintf;
 use function strtolower;
 
 class GiteaProvider extends AbstractProvider
@@ -35,7 +38,8 @@ class GiteaProvider extends AbstractProvider
             }
             default:
             {
-                throw new InvalidArgumentException('%s Git webhook event not support, %s', $this->getProvider(), $event);
+                throw new InvalidArgumentException(sprintf('%s Git webhook event not support, %s', $this->getProvider(),
+                    $event), Response::HTTP_FORBIDDEN);
             }
         }
     }
@@ -56,6 +60,7 @@ class GiteaProvider extends AbstractProvider
         }
         $event->setUser($user);
         $event->setCommits($this->createCommits($payload['commits']));
+        $event->setBranchName(Util::getBranchName($payload['ref']));
         return $event;
     }
 

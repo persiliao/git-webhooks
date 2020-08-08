@@ -15,6 +15,7 @@ use PersiLiao\GitWebhooks\Event\PingEvent;
 use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use PersiLiao\GitWebhooks\Provider\ProviderInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Persi.Liao
@@ -82,7 +83,7 @@ class Repository
             $provider->validate();
             return $provider->create();
         }
-        throw new InvalidArgumentException('Git webhook not support');
+        throw new InvalidArgumentException('Git webhook not support', Response::HTTP_BAD_REQUEST);
     }
 
     public function __call($name, $arguments)

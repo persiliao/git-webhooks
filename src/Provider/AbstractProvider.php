@@ -15,6 +15,7 @@ use PersiLiao\GitWebhooks\Event\PushEvent;
 use PersiLiao\GitWebhooks\EventHandlerInterface;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use function call_user_func;
 use function is_string;
 use function json_decode;
@@ -82,7 +83,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     public function getProvider(): string
     {
         if(empty($this->provider) || !is_string($this->provider)){
-            throw new InvalidArgumentException(sprintf('%s $provider must be a string', static::class));
+            throw new InvalidArgumentException(sprintf('%s $provider must be a string', static::class), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return $this->provider;
     }
@@ -98,7 +99,7 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         $method = $this->request->server->get('REQUEST_METHOD');
         if($method !== Request::METHOD_POST){
             throw new InvalidArgumentException(sprintf('%s Request method %s not support, Only supports POST', $this->getProvider
-            (), $method));
+            (), $method), Response::HTTP_FORBIDDEN);
         }
         return true;
     }
@@ -140,7 +141,8 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         }
 
         if($this->genreateSignature($this->secret, $this->getPayload()) !== $this->getSignature()){
-            throw new InvalidArgumentException(sprintf('%s Signature check error', $this->getProvider()));
+            throw new InvalidArgumentException(sprintf('%s Signature check error', $this->getProvider()),
+                Response::HTTP_UNAUTHORIZED);
         }
         return true;
     }
@@ -202,7 +204,8 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
         if(isset($this->events[$requestEventName]) && $this->events[$requestEventName] === $eventName){
             return call_user_func($closure);
         }
-        throw new InvalidArgumentException(sprintf('%s Request Event not support, %s', $this->getProvider(), $requestEventName));
+        throw new InvalidArgumentException(sprintf('%s Request Event not support, %s', $this->getProvider(),
+            $requestEventName), Response::HTTP_BAD_REQUEST);
     }
 
     /**
