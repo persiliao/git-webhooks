@@ -12,7 +12,7 @@ namespace PersiLiao\GitWebhooks\Entity;
 class User
 {
     /**
-     * @var string
+     * @var int
      */
     private $id;
 
@@ -27,23 +27,23 @@ class User
     private $email;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param string $id
+     * @param int $id
      * @return User
      */
-    public function setId(string $id): User
+    public function setId(int $id): User
     {
         $this->id = $id;
         return $this;
     }
-
+    
     /**
      * @return string
      */
