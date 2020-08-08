@@ -18,6 +18,7 @@ use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use function array_key_exists;
+use function array_merge;
 use function call_user_func;
 use function is_string;
 use function json_decode;
@@ -26,6 +27,11 @@ use function strtolower;
 
 abstract class AbstractProvider implements ProviderInterface, EventHandlerInterface
 {
+    protected $defaultEvents = [
+        'push' => 'onPush',
+        'ping' => 'onPing'
+    ];
+
     /**
      * @var string[]
      */
@@ -236,7 +242,8 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
     public function addHandle(string $eventName, Closure $closure)
     {
         $requestEventName = $this->getEventName();
-        if(isset($this->events[$requestEventName]) && $this->events[$requestEventName] === $eventName){
+        $events = array_merge($this->defaultEvents, $this->events);
+        if(isset($events[$requestEventName]) && $events[$requestEventName] === $eventName){
             return call_user_func($closure);
         }
         throw new InvalidArgumentException(sprintf('%s Request Event not support, %s', $this->getProvider(),
