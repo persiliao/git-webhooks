@@ -17,6 +17,7 @@ use PersiLiao\GitWebhooks\EventHandlerInterface;
 use PersiLiao\GitWebhooks\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use function array_key_exists;
 use function call_user_func;
 use function is_string;
 use function json_decode;
@@ -68,14 +69,13 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
      * AbstractProvider constructor.
      * @param Request $request
      */
-    final public function __construct(Request $request, string $secret = '')
+    final public function __construct(Request $request)
     {
         $this->request = $request;
         $provider = $this->getProvider();
         $this->headerEventKey = sprintf('X-%s-Event', $provider);
         $this->headerSignatureKey = sprintf('X-%s-Signature', $provider);
         $this->setPayloadRaw();
-        $this->setSecret($secret);
     }
 
     /**
@@ -137,9 +137,11 @@ abstract class AbstractProvider implements ProviderInterface, EventHandlerInterf
             return true;
         }
 
-        $repositoryName = $event->getRepository()->getName();
-        if(!empty($repositoryName) && isset($secrets[$repositoryName])){
-            $this->setSecret($secrets[$repositoryName]);
+        if(!empty($secrets)){
+            $repositoryName = $event->getRepository()->getName();
+            if(!empty($repositoryName) && array_key_exists($repositoryName, $secrets)){
+                $this->setSecret($secrets[$repositoryName]);
+            }
         }
 
         if(empty($this->getSecret())){
