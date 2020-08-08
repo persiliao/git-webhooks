@@ -5,6 +5,10 @@ normalise webhook events for Github, Gitlab, Gitea, Gogs
 ## Installation (using composer)
 
 ```bash
+# Stable
+composer require persiliao/git-webhooks
+
+# Development
 composer require persiliao/git-webhooks:dev-master
 ```
 
